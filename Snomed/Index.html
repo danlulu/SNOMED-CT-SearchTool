@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>SNOMED CT</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/plain" rel="author" href="humans.txt" />
+
+    <link rel="stylesheet" href="./Content/bootstrap.cerulean.min.css" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.common.min.css" />
+    <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.bootstrap.min.css" />
+
+    <link href="./Content/site.css" rel="stylesheet" />
+
+    <script src="./Scripts/modernizr.min.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="./Scripts/html5shiv.js"></script>
+        <script src="./Scripts/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <style>
+        body {
+            margin-top: 80px;
+            margin-bottom: 70px;
+        }
+
+        .active.btn-primary {
+            filter: none;
+        }
+    </style>
+    <header class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <nav class="nav navbar-nav navbar-left">
+                <img src="./Content/Images/SNOMED.jpg" style="margin-top:5px;"/>
+            </nav>
+            <div class="navbar-header">
+                <a href="./index.html" class="navbar-brand">&nbsp;&nbsp;&nbsp;SNOMED CT: &nbsp;Clinical Terms Search Facility</a>
+            </div>
+            <nav class="nav navbar-nav navbar-right">
+                <img src="./Content/Images/ihtsdo-logo.gif" style="margin-top:5px;" />
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 col-md-4" style="margin-top:7px;">
+                <span>Search Using:</span>
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-primary" id="tooltip1">
+                        <input type="radio">FSNs
+                    </label>
+                    <label class="btn btn-primary" id="tooltip2">
+                        <input type="radio">PTs
+                    </label>
+                    <label class="btn btn-primary" id="tooltip3">
+                        <input type="radio">Syns
+                    </label>
+                    <label class="btn btn-primary active" id="tooltip4">
+                        <input type="radio">All
+                    </label>
+                </div>
+            </div>
+            <div style="margin-top:10px" class="col-sm-4 col-md-4">
+                <span>Search Type:</span>
+                <input id="searchType" value="1" />
+            </div>
+            <div style="margin-top:10px" class="col-sm-4 col-md-4">
+                <span>Concept Types:</span>
+                <input id="conceptType" value="1" />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-8 col-md-8">
+                <form id="frmSearch" class="navbar-form" role="search">
+                    <div class="input-group">
+                        <span class="input-group-addon">Search Term</span>
+                        <input type="text" class="form-control" placeholder="Keyword(s)" id="searchTerm" style="width:500px;">
+                        <div class="input-group-btn">
+                            <button class="btn btn-primary" type="submit" id="searchConcepts">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <br />
+        <div class="row" id="results">
+            <span class="badge badge-info">Search Results:</span>
+            <div class="k-content container">
+                <div id="gridConcepts">
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row" id="relationships">
+            <span class="badge badge-info">Relationships of Selected Concept:</span>
+            <div class="k-content container">
+                <div id="gridRelationships">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="navbar navbar-inverse navbar-fixed-bottom">
+        <div class="container">
+            <nav>
+                <ul class="nav navbar-nav">
+                    <li><a href="http://www.health.govt.nz/nz-health-statistics/classification-and-terminology/new-zealand-snomed-ctr-national-release-centre" target="_blank">New Zealand SNOMED CT</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://www.ihtsdo.org/" target="_blank">IHTSDO</a></li>
+                </ul>
+            </nav>
+        </div>
+    </footer>
+
+    <script src="http://cdn.kendostatic.com/2014.1.528/js/jquery.min.js"></script>
+    <script>
+        if (typeof jQuery == "undefined") {
+            // fallback to local jQuery
+            document.write(decodeURIComponent('%3Cscript src="./Scripts/jquery-1.9.1.min.js" %3E%3C/script%3E'));
+        }
+    </script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+        if (typeof ($.fn.modal) === 'undefined') {
+            // assume that if the bootstrap scripts have failed, so have the font-awesome and toastr stylesheets
+            document.write(decodeURIComponent('%3Clink rel="stylesheet" href="./Content/font-awesome.min.css" %3C/%3E'));
+            document.write(decodeURIComponent('%3Clink rel="stylesheet" href="./Content/toastr.min.css" %3C/%3E'));
+
+            // fallback to local bootstrap and toastr scripts
+            document.write(decodeURIComponent('%3Cscript src="./Scripts/bootstrap.min.js" %3E%3C/script%3E'));
+            document.write(decodeURIComponent('%3Cscript src="./Scripts/toastr.min.js" %3E%3C/script%3E'));
+
+        }
+    </script>
+
+    <script src="http://cdn.kendostatic.com/2014.1.528/js/kendo.web.min.js"></script>
+    <script>
+        if (typeof kendo == "undefined") {
+            // checking for loaded CSS files is cumbersome,
+            // that's why we assume that if the scripts have failed, so have the stylesheets
+
+            // fallback to local Kendo UI stylesheets
+            document.write(decodeURIComponent('%3Clink rel="stylesheet" href="./Content/kendo.common.min.css" %3C/%3E'));
+            document.write(decodeURIComponent('%3Clink rel="stylesheet" href="./Content/kendo.bootstrap.min.css" %3C/%3E'));
+
+            // fallback to local Kendo UI scripts
+            document.write(decodeURIComponent('%3Cscript src="./Scripts/kendo.web.min.js" %3E%3C/script%3E'));
+            // also add kendo.aspnetmvc.min.js or kendo.timezones.min.js, if needed
+        }
+    </script>
+
+    <script src="./Scripts/snomed.js"></script>
+</body>
+</html>
