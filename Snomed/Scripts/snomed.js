@@ -12,8 +12,8 @@
         }
 
         var searchTypes = [
-                    { text: "Contains - Match Order", value: "Match Order" },
-                    { text: "Contains - Any Order", value: "Any Order" },
+                    { text: "Match Order", value: "Match Order" },
+                    { text: "Any Order", value: "Any Order" },
                     { text: "Starts With", value: "Starts With" },
                     { text: "Ends With", value: "Ends With" }
         ];
@@ -50,7 +50,7 @@
         $("#results").hide();
         $("#relationships").hide();
 
-        var baseUrl = ".";   //window.location.protocol + "//" + window.location.host;
+        var baseUrl = "."; 
         var searchTerm = "";
         var searchType = "";
         var searchOption = "";
